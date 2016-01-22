@@ -80,6 +80,7 @@ end
 
 class Cell
 	attr_reader :val
+	attr_reader :change_counter
   def initialize
 	 @val = :blank
 	 @changed = false
@@ -95,6 +96,10 @@ class Cell
   	else
   		puts "sorry, looks like that spot's taken"
   	end
+  end
+
+  def self.count
+  	return @@change_counter
   end
 
   def show
@@ -129,11 +134,16 @@ while game.won? == false do
 	  puts "Your move player 2"
 	  game.change_cell(gets.chomp.upcase, :naught)
 	end
-	  game.show
-	  game.won?
+	game.show
+	game.won?
+	if Cell.count == 9
+	  break
+	end
 end
 
-if $turn == "player2"
+if Cell.count == 9
+	puts "No one wins!"
+elsif $turn == "player2"
 	puts "Player 1 has won the game!"
 else 
 	puts "Player 2 has won the game!"
